@@ -20,6 +20,8 @@ export class EditUserComponent implements OnInit {
 
   userForm: FormGroup;
 
+  maxDate = new Date();
+
   asyncUser: Observable<User>;
   title: string;
   private userId: string;

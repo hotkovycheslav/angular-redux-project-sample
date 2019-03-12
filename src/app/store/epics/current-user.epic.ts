@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { AnyAction } from 'redux';
 import { ActionsObservable } from 'redux-observable';
 import { of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, catchError } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { GlobalUserStorageService } from 'src/app/service/global-storage.service';
-import { LOGIN_USER, LOGOUT_USER, updateCurrentUserAction } from '../actions/current-user.actions';
+import { LOGIN_USER, LOGOUT_USER, updateCurrentUserAction, loginUserFailedAction } from '../actions/current-user.actions';
 
 @Injectable()
 export class CurrentUserEpic {
@@ -20,6 +20,9 @@ export class CurrentUserEpic {
                         map(user => {
                             this.localStorageService.currentUser = { ...user };
                             return updateCurrentUserAction(user);
+                        }),
+                        catchError((error) => {
+                            return of(loginUserFailedAction());
                         })
                     );
             })

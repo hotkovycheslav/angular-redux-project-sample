@@ -36,7 +36,7 @@ export class UserListComponent implements OnInit {
 
   onEditClick(userId: string) {
     this.matDialog.open(EditUserComponent, {
-      width: '500px',
+      width: '550px',
       height: '400px',
       data: { userId }
     });
@@ -48,7 +48,7 @@ export class UserListComponent implements OnInit {
 
   onCreateUserClick() {
     this.matDialog.open(EditUserComponent, {
-      width: '500px',
+      width: '550px',
       height: '400px',
       data: { userId: null }
     });
@@ -56,8 +56,6 @@ export class UserListComponent implements OnInit {
 
   onDeleteClick(userId: string) {
     this.matDialog.open(DeleteUserComponent, {
-      width: '500px',
-      height: '400px',
       data: { userId }
     });
   }

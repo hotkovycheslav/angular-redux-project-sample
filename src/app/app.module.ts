@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { createLogger } from 'redux-logger';
 import { createEpicMiddleware } from 'redux-observable';
-import thunkMiddlware from 'redux-thunk';
 import { AppRouterModule } from './app-router.module';
 import { AppComponent } from './app.component';
 import { DialogsModule } from './components/dialogs/dialogs.module';
@@ -23,6 +22,7 @@ import { EpicsModule } from './store/epics/epics.module';
 import { EpicService } from './store/epics/epics.service';
 import { reducers } from './store/reducers/reducers';
 import { TransformService } from './utils/transform.service';
+import { GlobalUserStorageService } from './service/global-storage.service';
 
 @NgModule({
   declarations: [
@@ -57,14 +57,21 @@ export class AppModule {
 
   constructor(private ngRedux: NgRedux<AppState>,
     private ngReduxRouter: NgReduxRouter,
-    private epicService: EpicService, private devTools: DevToolsExtension) {
+    private epicService: EpicService, private devTools: DevToolsExtension,
+    private localStorageService: GlobalUserStorageService) {
+
     const epics = this.epicService.getEpics();
     const middleware = createEpicMiddleware();
     let enhancers = [];
     if (devTools.isEnabled()) {
       enhancers = [devTools.enhancer()];
     }
-    ngRedux.configureStore(reducers, {} as AppState, [middleware, thunkMiddlware, createLogger()], enhancers);
+
+    const currentUser = localStorageService.currentUser;
+
+    const INITIAL_STATE: AppState = {currentUser};
+
+    ngRedux.configureStore(reducers, INITIAL_STATE, [middleware, createLogger()], enhancers);
     middleware.run(epics as any);
     ngReduxRouter.initialize(state => state.route);
   }

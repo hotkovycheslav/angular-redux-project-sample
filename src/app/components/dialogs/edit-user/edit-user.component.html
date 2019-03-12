@@ -14,9 +14,9 @@
             <mat-error *ngIf="email.invalid">{{getErrorText('email')}}</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput [formControlName]="'dateOfBirth'" placeholder="Birthday" [matDatepicker]="picker">
+            <input matInput [max]="maxDate" [formControlName]="'dateOfBirth'" placeholder="Birthday" [matDatepicker]="picker">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <mat-datepicker touchUi #picker></mat-datepicker>
         </mat-form-field>
     </form>
     <div class="edit-user-controls">
