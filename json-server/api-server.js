@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const userRouter = require('./user.router');
 const loginRouter = require('./login.router');
+const projectRouter = require('./project.router');
 const app = express();
 const allowCrossDomain = function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -11,11 +12,13 @@ const allowCrossDomain = function (req, res, next) {
 };
 
 const userUrl = '/api/users';
+const projectUrl = '/api/projects';
 const loginUrl = '/api/login';
 app.use(allowCrossDomain);
 app.use(bodyParser.json());
 app.use(userUrl, userRouter);
 app.use(loginUrl, loginRouter);
+app.use(projectUrl, projectRouter);
 app.listen(3000, () => {
     console.log('Fake API server is listening on port 3000');
 });

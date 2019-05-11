@@ -11,11 +11,18 @@ import { User } from './models/user.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
+  parentCounter = 0;
+
   constructor(private ngRedux: NgRedux<AppState>, private localStorageService: GlobalUserStorageService) { }
 
   ngOnInit() {
     this.localStorageService.asObservable().subscribe((user: Event) => {
-       this.ngRedux.dispatch(updateCurrentUserAction(this.localStorageService.currentUser));
+      this.ngRedux.dispatch(updateCurrentUserAction(this.localStorageService.currentUser));
     });
+  }
+
+  onCounterChange(operationType: string) {
+    console.log(operationType);
   }
 }

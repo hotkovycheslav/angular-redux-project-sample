@@ -23,6 +23,8 @@ import { EpicService } from './store/epics/epics.service';
 import { reducers } from './store/reducers/reducers';
 import { TransformService } from './utils/transform.service';
 import { GlobalUserStorageService } from './service/global-storage.service';
+import { FilterFormModule } from './components/filter-form/filter-form.module';
+import { BindingExampleModule } from './components/binding-example-component/binding-example.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { GlobalUserStorageService } from './service/global-storage.service';
     MatDialogModule,
     AppRouterModule,
     RouterModule,
-    ToolbarModule
+    ToolbarModule,
+    FilterFormModule,
+    BindingExampleModule
   ],
   providers: [
     EpicService,

@@ -5,10 +5,14 @@ module.exports.getUsers = () => {
     return data.users;
 };
 
+module.exports.getProjects = () => {
+    return data.projects;
+};
+
 module.exports.createUser = (user) => {
-   user.id = uuidv4();
-   data.users.push(user);
-   return user;
+    user.id = uuidv4();
+    data.users.push(user);
+    return user;
 };
 
 module.exports.updateUser = (user) => {

@@ -1,2 +1,5 @@
 <app-toolbar></app-toolbar>
+<app-filter-form></app-filter-form>
+<span class="counter-title"> Current Counter Value {{parentCounter}}</span>
+<app-binding-example [counterTitle]="'Plus/Minus counter'" [(counter)]="parentCounter" (operation)="onCounterChange($event)"></app-binding-example>
 <router-outlet></router-outlet>

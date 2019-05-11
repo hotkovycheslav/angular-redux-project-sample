@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { User } from '../models/user.model';
+import { SearchByName } from '../components/filter-form/abstract-select-form/abstract-select-form.component';
 
 @Injectable()
-export class UserService {
+export class UserService implements SearchByName<User> {
 
     private USERS_URL = '/api/users';
 
@@ -18,6 +19,11 @@ export class UserService {
 
     getUser(userId: string): Observable<User> {
         return this.http.get<User>(`${this.USERS_URL}/${userId}`)
+            .pipe(catchError((error: any) => throwError(error.error)));
+    }
+
+    searchByName(name: string): Observable<User[]> {
+        return this.http.get<User[]>(`${this.USERS_URL}`)
             .pipe(catchError((error: any) => throwError(error.error)));
     }
 
