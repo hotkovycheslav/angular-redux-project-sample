@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, InjectionToken, Inject } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, InjectionToken, Inject, TemplateRef } from '@angular/core';
 import { ControlContainer, FormControl } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
 import { Observable } from 'rxjs';
@@ -33,11 +33,17 @@ export class AbstractSelectFormComponent<T = any> implements OnInit {
   @Input()
   title: string;
 
-  selectedUserList: User[] = [];
+  @Input()
+  valueTitleKey = 'name';
+
+  @Input()
+  itemTemplate: TemplateRef<{item: T}>;
+
+  selectedItemsList: T[] = [];
 
   inputControl: FormControl = new FormControl();
 
-  @ViewChild('assigneeInput') searchInput: ElementRef<HTMLInputElement>;
+  @ViewChild('nameInput') searchInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(private controlContainer: ControlContainer,
@@ -70,23 +76,24 @@ export class AbstractSelectFormComponent<T = any> implements OnInit {
     }
   }
 
-  removeItem(item: User) {
-    this.selectedUserList = this.selectedUserList.filter(user => user !== item);
-    this.control.setValue(this.selectedUserList);
+  removeItem(item: T) {
+    this.selectedItemsList = this.selectedItemsList.filter(it => it !== item);
+    this.control.setValue(this.selectedItemsList);
   }
 
   get control() {
     return this.controlContainer.control.get(this.controlName);
   }
 
-  compareWithFunc(o1: User, o2: User) {
-    return o1.id === o2.id;
+  @Input()
+  compareWithFunc = (o1: T, o2: T) => {
+    return o1 === o2;
   }
 
   onItemSelect(event: MatAutocompleteSelectedEvent): void {
     if (this.multiple) {
-      this.selectedUserList.push(event.option.value);
-      this.control.setValue(this.selectedUserList);
+      this.selectedItemsList.push(event.option.value);
+      this.control.setValue(this.selectedItemsList);
       this.searchInput.nativeElement.value = '';
       this.inputControl.setValue(null);
     } else {

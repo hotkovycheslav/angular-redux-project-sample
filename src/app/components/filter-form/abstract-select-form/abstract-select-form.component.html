@@ -1,10 +1,10 @@
-<mat-form-field class="assignee-form">
+<mat-form-field class="select-form">
   <mat-chip-list class="chips-overflow" *ngIf="multiple; else single" [multiple]="true" #chipList>
-    <mat-chip *ngFor="let user of selectedUserList" [removable]="true" (removed)="removeItem(user)">
+    <mat-chip *ngFor="let user of selectedItemsList" [removable]="true" (removed)="removeItem(user)">
       {{user.name}}
       <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
     </mat-chip>
-    <input #assigneeInput [formControl]="inputControl" [placeholder]="placeholder" [matAutocomplete]="auto"
+    <input #nameInput [formControl]="inputControl" [placeholder]="placeholder" [matAutocomplete]="auto"
       [matChipInputFor]="chipList" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addItem($event)">
   </mat-chip-list>
   <ng-template #single>
@@ -14,7 +14,14 @@
   </ng-template>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onItemSelect($event)">
     <mat-option *ngFor="let item of items$ | async" [value]="item">
-      {{item?.name}}
+      <ng-container *ngIf="!itemTemplate; else custom">
+          {{item[valueTitleKey]}}
+      </ng-container>
+
+      <ng-template [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{item: item}" #custom>
+      </ng-template>
+      
+      
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>

@@ -1,2 +1,7 @@
-<app-abstract-select-form [controlName]="controlName" [placeholder]="placeholder" [multiple]="multiple">
+<app-abstract-select-form [controlName]="controlName" [placeholder]="placeholder" 
+    [multiple]="multiple" [itemTemplate]="customItem">
 </app-abstract-select-form>
+
+<ng-template let-item="item" #customItem>
+    <span>Custom {{item?.name}}</span>
+</ng-template>
