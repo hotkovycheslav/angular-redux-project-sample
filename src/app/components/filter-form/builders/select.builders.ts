@@ -39,7 +39,8 @@ export class IssueTypeBuilder implements AbstractBuilder<InputModel, SelectFilte
             placeholder: 'Issue Types',
             titleKey: 'title',
             value: model.value || [],
-            options: [...allIssueType]
+            options: [...allIssueType],
+            itemValueKey: 'type'
         };
     }
 }

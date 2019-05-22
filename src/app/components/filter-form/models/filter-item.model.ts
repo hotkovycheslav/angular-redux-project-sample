@@ -58,10 +58,11 @@ export interface FilterItem<T = any> {
 export interface InputFilterItem extends FilterItem<string> {
 }
 
-export interface SelectFilterItem<D> extends FilterItem<Array<D>> {
+export interface SelectFilterItem<D = any> extends FilterItem<Array<D>> {
     readonly options: Array<D>;
     readonly multiple: boolean;
     readonly titleKey: string;
+    readonly itemValueKey?: string;
 }
 
 export interface InputModel {

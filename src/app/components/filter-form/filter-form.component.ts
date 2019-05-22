@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSelect, MatSelectChange } from '@angular/material';
 import { FilterItemFactory } from './factory/filter-item.factory';
-import { allFilterTypeLabled, FieldType, FilterItem } from './models/filter-item.model';
+import { allFilterTypeLabled, FieldType, FilterItem, SelectFilterItem } from './models/filter-item.model';
 
 @Component({
   selector: 'app-filter-form',
@@ -55,7 +55,17 @@ export class FilterFormComponent implements OnInit {
   }
 
   onSearchSubmit() {
-    console.log(this.filterForm.getRawValue());
+    const formValue = this.filterForm.getRawValue();
+    const parameters = this.filterItems.map(item => {
+      if (item.value instanceof Array) {
+        const selectItem = item as SelectFilterItem;
+        const keyValue = formValue[selectItem.key] as Array<any>;
+        const parameterValue = selectItem.itemValueKey ? keyValue.map(el => el[selectItem.itemValueKey]) : keyValue;
+        return { ...item, listValue: parameterValue };
+      }
+      return { ...item, value: formValue[item.key] };
+    });
+    console.log(parameters);
   }
 
   private generateFormGroupFormSearchItems() {
