@@ -37,7 +37,10 @@ export class AbstractSelectFormComponent<T = any> implements OnInit {
   valueTitleKey = 'name';
 
   @Input()
-  itemTemplate: TemplateRef<{item: T}>;
+  itemValueKey: string;
+
+  @Input()
+  itemTemplate: TemplateRef<{ item: T }>;
 
   selectedItemsList: T[] = [];
 
@@ -78,7 +81,7 @@ export class AbstractSelectFormComponent<T = any> implements OnInit {
 
   removeItem(item: T) {
     this.selectedItemsList = this.selectedItemsList.filter(it => it !== item);
-    this.control.setValue(this.selectedItemsList);
+    this.updateControlValue();
   }
 
   get control() {
@@ -93,14 +96,21 @@ export class AbstractSelectFormComponent<T = any> implements OnInit {
   onItemSelect(event: MatAutocompleteSelectedEvent): void {
     if (this.multiple) {
       this.selectedItemsList.push(event.option.value);
-      this.control.setValue(this.selectedItemsList);
       this.searchInput.nativeElement.value = '';
       this.inputControl.setValue(null);
+      this.updateControlValue();
     } else {
-      const user = event.option.value;
-      this.control.setValue(user);
-      this.inputControl.setValue(user.name);
+      const item = event.option.value;
+      const itemValue = this.itemValueKey ? item[this.itemValueKey] : item;
+      this.control.setValue(itemValue);
+      this.inputControl.setValue(item[this.valueTitleKey]);
     }
+  }
+
+  private updateControlValue() {
+    const valueForUpdate = !this.itemValueKey ? this.selectedItemsList : this.selectedItemsList
+      .map(item => item[this.itemValueKey]);
+    this.control.setValue(valueForUpdate);
   }
 
 }

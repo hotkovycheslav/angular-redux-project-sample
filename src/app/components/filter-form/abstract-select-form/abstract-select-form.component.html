@@ -1,7 +1,7 @@
 <mat-form-field class="select-form">
   <mat-chip-list class="chips-overflow" *ngIf="multiple; else single" [multiple]="true" #chipList>
-    <mat-chip *ngFor="let user of selectedItemsList" [removable]="true" (removed)="removeItem(user)">
-      {{user.name}}
+    <mat-chip *ngFor="let item of selectedItemsList" [removable]="true" (removed)="removeItem(item)">
+      {{item[valueTitleKey]}}
       <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
     </mat-chip>
     <input #nameInput [formControl]="inputControl" [placeholder]="placeholder" [matAutocomplete]="auto"
